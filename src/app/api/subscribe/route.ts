@@ -4,11 +4,12 @@ import { plunk } from "@/lib/plunk";
 
 export async function POST(request: Request) {
   try {
-    const { email, name } = await request.json();
+    const { email, name , phoneNo , yearAndDept , clgName , why} = await request.json();
 
     if (!email || !email.includes("@")) {
       return NextResponse.json({ error: "Valid email required" }, { status: 400 });
     }
+  
 
     // Track signup event in Plunk
     const success = await plunk.events.track({
@@ -18,7 +19,13 @@ export async function POST(request: Request) {
       data: {
         name: name || "Anonymous",
         source: "website-form",
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        email: email,
+        number: phoneNo,
+        yearAndDept : yearAndDept,
+        clgName: clgName,
+        why: why,
+
       }
     });
 
